@@ -1,0 +1,3847 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#635bdb">
+<link rel="icon" href="icon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>StudyFlow</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--bg:#f5f7fb;
+--card:#fff;
+--text:#171a2b;
+--muted:#747b8e;
+--border:#e5e8ef;
+--primary:#635bdb;
+--primary-dark:#5149c5;
+--green:#25a36a;
+--red:#dc5267;
+--orange:#e99a36;
+--sidebar:#151827;
+}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+input,select,textarea{
+border:1px solid var(--border);
+background:var(--card);
+color:var(--text);
+border-radius:9px;
+padding:11px 12px;
+outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+border-color:var(--primary);
+}
+
+/* APP */
+
+.app{
+display:grid;
+grid-template-columns:240px 1fr;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+background:var(--sidebar);
+color:white;
+padding:25px 15px;
+height:100vh;
+position:sticky;
+top:0;
+}
+
+.logo{
+font-size:25px;
+font-weight:800;
+padding:7px 10px 30px;
+}
+
+.logo span{color:#aaa5ff}
+
+.nav{
+display:flex;
+flex-direction:column;
+gap:7px;
+}
+
+.nav button{
+border:0;
+background:transparent;
+color:#b9bfd0;
+padding:13px;
+border-radius:10px;
+text-align:left;
+}
+
+.nav button:hover,
+.nav button.active{
+background:#292d45;
+color:white;
+}
+
+/* MAIN */
+
+.main{
+padding:30px;
+width:100%;
+max-width:1500px;
+margin:auto;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:25px;
+}
+
+.topbar h1{font-size:30px}
+
+.subtitle{
+color:var(--muted);
+margin-top:6px;
+}
+
+/* BUTTONS */
+
+.primary{
+border:0;
+background:var(--primary);
+color:white;
+padding:11px 17px;
+border-radius:10px;
+font-weight:bold;
+}
+
+.primary:hover{
+background:var(--primary-dark);
+}
+
+.secondary{
+border:0;
+background:#edf0f5;
+color:var(--text);
+padding:10px 15px;
+border-radius:9px;
+}
+
+.danger{color:var(--red)!important}
+
+/* SECTIONS */
+
+.section{display:none}
+.section.active{display:block}
+
+/* HERO */
+
+.hero{
+background:linear-gradient(135deg,#635bdb,#7770ed);
+color:white;
+border-radius:20px;
+padding:28px;
+margin-bottom:20px;
+position:relative;
+overflow:hidden;
+}
+
+.hero:after{
+content:"";
+position:absolute;
+width:190px;
+height:190px;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+right:-60px;
+top:-70px;
+}
+
+.hero h2{
+font-size:27px;
+margin-bottom:7px;
+}
+
+.hero p{opacity:.9}
+
+.hero-progress{
+margin-top:23px;
+max-width:600px;
+}
+
+.hero-progress-top{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+margin-bottom:8px;
+}
+
+.hero .progress{
+background:rgba(255,255,255,.3);
+}
+
+.hero .progress-bar{background:white}
+
+/* STATS */
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:20px;
+}
+
+.stat{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:16px;
+padding:18px;
+}
+
+.stat-icon{
+font-size:21px;
+margin-bottom:10px;
+}
+
+.stat-number{
+font-size:28px;
+font-weight:800;
+}
+
+.stat-label{
+color:var(--muted);
+font-size:13px;
+margin-top:5px;
+}
+
+/* GRID */
+
+.dashboard-grid{
+display:grid;
+grid-template-columns:1.35fr 1fr;
+gap:20px;
+}
+
+.card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:17px;
+padding:20px;
+box-shadow:0 7px 25px rgba(20,30,60,.05);
+}
+
+.card-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.card-title h2{font-size:18px}
+
+/* COMPULSORY */
+
+.compulsory-card{
+margin-bottom:20px;
+border:2px solid #eceaff;
+}
+
+.compulsory-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+}
+
+.compulsory-title{
+font-size:19px;
+font-weight:800;
+}
+
+.compulsory-subtitle{
+color:var(--muted);
+font-size:12px;
+margin-top:4px;
+}
+
+.daily-percent{
+font-size:24px;
+font-weight:800;
+color:var(--primary);
+}
+
+.compulsory-progress{
+height:9px;
+background:#e9ecf2;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+.compulsory-progress-bar{
+height:100%;
+background:var(--primary);
+width:0;
+transition:.3s;
+}
+
+.compulsory-task{
+display:grid;
+grid-template-columns:25px 1fr auto;
+align-items:center;
+gap:12px;
+padding:13px 0;
+border-bottom:1px solid var(--border);
+}
+
+.compulsory-task:last-child{
+border-bottom:0;
+}
+
+.compulsory-check{
+width:20px;
+height:20px;
+border:2px solid #adb5c5;
+border-radius:6px;
+background:transparent;
+}
+
+.compulsory-check.done{
+background:var(--green);
+border-color:var(--green);
+color:white;
+}
+
+.compulsory-task.done .compulsory-name{
+text-decoration:line-through;
+color:#969cab;
+}
+
+.compulsory-name{font-weight:bold}
+
+.compulsory-meta{
+color:var(--muted);
+font-size:11px;
+margin-top:4px;
+}
+
+.compulsory-actions button{
+border:0;
+background:transparent;
+color:var(--muted);
+padding:5px;
+}
+
+.compulsory-actions button:hover{
+color:var(--red);
+}
+
+.add-compulsory{
+border:1px dashed #bfc4d3;
+background:transparent;
+color:var(--muted);
+width:100%;
+padding:10px;
+border-radius:9px;
+margin-top:12px;
+}
+
+.add-compulsory:hover{
+border-color:var(--primary);
+color:var(--primary);
+}
+
+/* NORMAL TASKS */
+
+.task{
+display:grid;
+grid-template-columns:25px 1fr auto;
+gap:12px;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid var(--border);
+}
+
+.task:last-child{border-bottom:0}
+
+.check{
+width:20px;
+height:20px;
+border:2px solid #adb5c5;
+border-radius:6px;
+background:transparent;
+}
+
+.check.done{
+background:var(--primary);
+border-color:var(--primary);
+color:white;
+}
+
+.task.done .task-title{
+text-decoration:line-through;
+color:#969cab;
+}
+
+.task-title{font-weight:bold}
+
+.task-meta{
+color:var(--muted);
+font-size:12px;
+margin-top:5px;
+}
+
+.tag{
+display:inline-block;
+background:#eeeeff;
+color:#514ac4;
+border-radius:20px;
+padding:4px 8px;
+font-size:10px;
+margin-left:5px;
+}
+
+.overdue{
+color:var(--red)!important;
+font-weight:bold;
+}
+
+.task-actions button{
+border:0;
+background:transparent;
+color:var(--muted);
+padding:5px;
+}
+
+/* QUICK ACTIONS */
+
+.quick-actions{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:20px;
+}
+
+.quick-action{
+border:1px solid var(--border);
+background:var(--card);
+border-radius:12px;
+padding:15px;
+text-align:left;
+}
+
+.quick-action:hover{
+border-color:var(--primary);
+}
+
+.quick-action strong{
+display:block;
+margin-bottom:5px;
+}
+
+.quick-action span{
+color:var(--muted);
+font-size:11px;
+}
+
+/* WEEK */
+
+.week-controls{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:18px;
+}
+
+.week-title{
+text-align:center;
+font-weight:800;
+}
+
+.week-buttons{
+display:flex;
+gap:7px;
+}
+
+.week-grid{
+display:grid;
+grid-template-columns:repeat(7,minmax(145px,1fr));
+gap:10px;
+overflow-x:auto;
+padding-bottom:8px;
+}
+
+.day-card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:15px;
+min-height:430px;
+padding:12px;
+display:flex;
+flex-direction:column;
+}
+
+.day-card.today{
+border:2px solid var(--primary);
+}
+
+.day-header{
+border-bottom:1px solid var(--border);
+padding-bottom:11px;
+margin-bottom:8px;
+}
+
+.day-name{
+font-size:12px;
+color:var(--muted);
+text-transform:uppercase;
+font-weight:bold;
+}
+
+.day-number{
+font-size:23px;
+font-weight:800;
+margin-top:3px;
+}
+
+.today-label{
+display:inline-block;
+font-size:10px;
+color:white;
+background:var(--primary);
+padding:3px 6px;
+border-radius:10px;
+margin-top:5px;
+}
+
+.day-tasks{flex:1}
+
+.day-task{
+background:#f0efff;
+border-left:4px solid var(--primary);
+border-radius:9px;
+padding:9px;
+margin-bottom:8px;
+}
+
+.day-task.completed{opacity:.55}
+
+.day-task.completed .day-task-title{
+text-decoration:line-through;
+}
+
+.day-task-title{
+font-weight:bold;
+font-size:13px;
+line-height:1.3;
+}
+
+.day-task-subject{
+color:var(--muted);
+font-size:11px;
+margin-top:4px;
+}
+
+.day-task-priority{
+font-size:10px;
+margin-top:5px;
+}
+
+.priority-high{
+color:var(--red);
+font-weight:bold;
+}
+
+.priority-low{color:var(--green)}
+
+.add-day-task{
+width:100%;
+border:1px dashed #bfc4d3;
+background:transparent;
+color:var(--muted);
+padding:9px;
+border-radius:9px;
+margin-top:10px;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:15px;
+}
+
+.toolbar input{
+flex:1;
+min-width:190px;
+}
+
+/* SUBJECTS */
+
+.subject-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.subject{
+border:1px solid var(--border);
+border-radius:12px;
+padding:15px;
+}
+
+.subject-name{
+font-weight:bold;
+margin-bottom:6px;
+}
+
+.subject-count{
+color:var(--muted);
+font-size:12px;
+}
+
+/* GOALS */
+
+.goal-form{
+display:flex;
+gap:10px;
+margin-bottom:18px;
+}
+
+.goal-form input{flex:1}
+
+.goal{
+padding:14px 0;
+border-bottom:1px solid var(--border);
+}
+
+.goal:last-child{border-bottom:0}
+
+.goal-header{
+display:flex;
+justify-content:space-between;
+gap:10px;
+font-weight:bold;
+}
+
+.goal-info{
+color:var(--muted);
+font-size:12px;
+margin:6px 0 9px;
+}
+
+.progress{
+height:9px;
+background:#e9ecf2;
+border-radius:50px;
+overflow:hidden;
+}
+
+.progress-bar{
+height:100%;
+width:0;
+background:var(--primary);
+border-radius:50px;
+transition:.3s;
+}
+
+.goal-actions{margin-top:6px}
+
+.goal-actions button{
+border:0;
+background:transparent;
+color:var(--muted);
+font-size:12px;
+}
+
+/* TIMER */
+
+.timer-card{
+max-width:650px;
+margin:auto;
+text-align:center;
+}
+
+.timer-mode{color:var(--muted)}
+
+.timer-clock{
+font-size:65px;
+font-weight:800;
+margin:20px 0;
+}
+
+.timer-buttons{
+display:flex;
+justify-content:center;
+gap:9px;
+}
+
+.quick-times{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-top:18px;
+}
+
+.quick-times button{
+border:0;
+background:#edf0f5;
+padding:8px 12px;
+border-radius:8px;
+}
+
+/* EMPTY */
+
+.empty{
+text-align:center;
+padding:30px 10px;
+color:var(--muted);
+}
+
+/* MODAL */
+
+.modal-bg{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:100;
+}
+
+.modal-bg.show{display:flex}
+
+.modal{
+background:var(--card);
+width:min(560px,100%);
+border-radius:17px;
+padding:23px;
+}
+
+.modal h2{margin-bottom:18px}
+
+.form{
+display:grid;
+gap:13px;
+}
+
+.form label{
+font-size:13px;
+font-weight:bold;
+}
+
+.form input,
+.form select,
+.form textarea{
+width:100%;
+margin-top:6px;
+}
+
+.form textarea{
+min-height:90px;
+resize:vertical;
+}
+
+.modal-buttons{
+display:flex;
+justify-content:flex-end;
+gap:9px;
+margin-top:8px;
+}
+
+/* TOAST */
+
+.toast{
+position:fixed;
+right:20px;
+bottom:20px;
+background:#181c2c;
+color:white;
+padding:12px 17px;
+border-radius:10px;
+opacity:0;
+transform:translateY(10px);
+transition:.25s;
+pointer-events:none;
+}
+
+.toast.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* DARK */
+
+body.dark{
+--bg:#0e1120;
+--card:#181c2b;
+--text:#f4f5fa;
+--muted:#a6aec0;
+--border:#2a3042;
+--sidebar:#090b13;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea{
+background:#151927;
+color:white;
+}
+
+body.dark .secondary,
+body.dark .quick-times button{
+background:#292e40;
+color:white;
+}
+
+body.dark .day-task{
+background:#242440;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+
+.app{
+grid-template-columns:1fr;
+}
+
+.sidebar{
+height:auto;
+position:static;
+padding:14px;
+}
+
+.logo{
+padding:5px 8px 12px;
+}
+
+.nav{
+flex-direction:row;
+overflow-x:auto;
+}
+
+.nav button{
+white-space:nowrap;
+}
+
+.main{padding:18px}
+
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+
+.dashboard-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:600px){
+
+.stats{
+grid-template-columns:1fr;
+}
+
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.quick-actions{
+grid-template-columns:1fr;
+}
+
+.week-grid{
+grid-template-columns:repeat(7,180px);
+}
+
+.goal-form{
+flex-direction:column;
+}
+
+.task,
+.compulsory-task{
+grid-template-columns:25px 1fr;
+}
+
+.task-actions,
+.compulsory-actions{
+grid-column:2;
+}
+
+.timer-clock{
+font-size:48px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo">
+Study<span>Flow</span>
+</div>
+
+<nav class="nav">
+
+<button class="active" data-page="dashboard">
+🏠 Dashboard
+</button>
+
+<button data-page="week">
+📅 Weekly Planner
+</button>
+
+<button data-page="tasks">
+✓ Tasks
+</button>
+
+<button data-page="compulsory">
+📌 Daily Compulsory
+</button>
+
+<button data-page="goals">
+🎯 Goals
+</button>
+
+<button data-page="subjects">
+📚 Subjects
+</button>
+
+<button data-page="timer">
+⏱️ Focus Timer
+</button>
+
+<button onclick="toggleDarkMode()">
+🌙 Dark Mode
+</button>
+
+</nav>
+
+</aside>
+
+
+<main class="main">
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="section active">
+
+<div class="topbar">
+
+<div>
+
+<h1 id="greeting">
+Good evening 👋
+</h1>
+
+<div class="subtitle" id="currentDate"></div>
+
+</div>
+
+<button
+class="primary"
+onclick="openTaskModal()"
+>
++ Add Task
+</button>
+
+</div>
+
+
+<div class="hero">
+
+<h2>
+Your study mission 🎯
+</h2>
+
+<p>
+Keep moving forward. One task at a time.
+</p>
+
+<div class="hero-progress">
+
+<div class="hero-progress-top">
+
+<span>
+Overall completion
+</span>
+
+<span id="overallPercent">
+0%
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+id="overallBar"
+></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-icon">📋</div>
+<div class="stat-number" id="totalTasks">0</div>
+<div class="stat-label">Total tasks</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">✅</div>
+<div class="stat-number" id="completedTasks">0</div>
+<div class="stat-label">Completed</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">📅</div>
+<div class="stat-number" id="todayTasksCount">0</div>
+<div class="stat-label">Today's tasks</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🔥</div>
+<div class="stat-number" id="streak">0</div>
+<div class="stat-label">Study streak</div>
+</div>
+
+</div>
+
+
+<!-- COMPULSORY ON DASHBOARD -->
+
+<div class="card compulsory-card">
+
+<div class="compulsory-header">
+
+<div>
+
+<div class="compulsory-title">
+📌 Today's Compulsory Tasks
+</div>
+
+<div class="compulsory-subtitle">
+These are your non-negotiable daily tasks.
+</div>
+
+</div>
+
+<div
+class="daily-percent"
+id="dailyPercent"
+>
+0%
+</div>
+
+</div>
+
+
+<div class="compulsory-progress">
+
+<div
+class="compulsory-progress-bar"
+id="dailyProgressBar"
+></div>
+
+</div>
+
+
+<div id="dashboardCompulsory"></div>
+
+
+<button
+class="add-compulsory"
+onclick="openCompulsoryModal()"
+>
++ Add compulsory task
+</button>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<div class="card">
+
+<div class="card-title">
+
+<h2>
+📋 Today's Tasks
+</h2>
+
+<button
+class="secondary"
+onclick="showPage('week')"
+>
+View Week
+</button>
+
+</div>
+
+<div id="todayTaskList"></div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+
+<h2>
+🎯 Main Goals
+</h2>
+
+<button
+class="secondary"
+onclick="showPage('goals')"
+>
+View Goals
+</button>
+
+</div>
+
+<div id="dashboardGoals"></div>
+
+</div>
+
+</div>
+
+
+<div class="quick-actions">
+
+<button
+class="quick-action"
+onclick="openTaskModal()"
+>
+
+<strong>➕ Add Task</strong>
+
+<span>
+Add something to your plan
+</span>
+
+</button>
+
+
+<button
+class="quick-action"
+onclick="showPage('goals')"
+>
+
+<strong>🎯 Add Goal</strong>
+
+<span>
+Set a bigger study target
+</span>
+
+</button>
+
+
+<button
+class="quick-action"
+onclick="showPage('timer')"
+>
+
+<strong>⚡ Start Focus</strong>
+
+<span>
+Start a focused study session
+</span>
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- WEEK -->
+
+<section id="week" class="section">
+
+<div class="topbar">
+
+<div>
+
+<h1>Weekly Planner 📅</h1>
+
+<div class="subtitle">
+Plan exactly what you want to study each day.
+</div>
+
+</div>
+
+<button
+class="primary"
+onclick="openTaskModal()"
+>
++ Add Task
+</button>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-icon">📋</div>
+<div class="stat-number" id="weekTotal">0</div>
+<div class="stat-label">Tasks this week</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">✅</div>
+<div class="stat-number" id="weekCompleted">0</div>
+<div class="stat-label">Completed</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🎯</div>
+<div class="stat-number" id="weekPercent">0%</div>
+<div class="stat-label">Weekly progress</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🔥</div>
+<div class="stat-number" id="weekStreak">0</div>
+<div class="stat-label">Study streak</div>
+</div>
+
+</div>
+
+
+<div class="week-controls">
+
+<div class="week-buttons">
+
+<button class="secondary" onclick="changeWeek(-1)">
+← Previous
+</button>
+
+<button class="secondary" onclick="goCurrentWeek()">
+This Week
+</button>
+
+</div>
+
+
+<div class="week-title" id="weekTitle">
+This Week
+</div>
+
+
+<div class="week-buttons">
+
+<button class="secondary" onclick="changeWeek(1)">
+Next →
+</button>
+
+</div>
+
+</div>
+
+
+<div class="week-grid" id="weekGrid"></div>
+
+</section>
+
+
+<!-- TASKS -->
+
+<section id="tasks" class="section">
+
+<div class="topbar">
+
+<div>
+
+<h1>My Tasks</h1>
+
+<div class="subtitle">
+Manage everything you need to complete.
+</div>
+
+</div>
+
+<button
+class="primary"
+onclick="openTaskModal()"
+>
++ Add Task
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="toolbar">
+
+<input
+id="search"
+placeholder="🔍 Search tasks..."
+oninput="renderTasks()"
+>
+
+<select id="filter" onchange="renderTasks()">
+
+<option value="all">All tasks</option>
+<option value="active">Active</option>
+<option value="completed">Completed</option>
+<option value="today">Today</option>
+<option value="overdue">Overdue</option>
+
+</select>
+
+</div>
+
+<div id="allTaskList"></div>
+
+</div>
+
+</section>
+
+
+<!-- COMPULSORY -->
+
+<section id="compulsory" class="section">
+
+<div class="topbar">
+
+<div>
+
+<h1>📌 Daily Compulsory Tasks</h1>
+
+<div class="subtitle">
+Tasks that you want to complete every single day.
+</div>
+
+</div>
+
+<button
+class="primary"
+onclick="openCompulsoryModal()"
+>
++ Add Compulsory
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="compulsory-header">
+
+<div>
+
+<div class="compulsory-title">
+Today's completion
+</div>
+
+<div class="compulsory-subtitle">
+Your daily discipline score
+</div>
+
+</div>
+
+<div
+class="daily-percent"
+id="compulsoryPagePercent"
+>
+0%
+</div>
+
+</div>
+
+
+<div class="compulsory-progress">
+
+<div
+class="compulsory-progress-bar"
+id="compulsoryPageBar"
+></div>
+
+</div>
+
+
+<div id="allCompulsory"></div>
+
+</div>
+
+</section>
+
+
+<!-- GOALS -->
+
+<section id="goals" class="section">
+
+<div class="topbar">
+
+<div>
+
+<h1>🎯 Study Goals</h1>
+
+<div class="subtitle">
+Your bigger targets live here.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="goal-form">
+
+<input
+id="goalInput"
+placeholder="Example: Complete 5 Maths chapters"
+>
+
+<button
+class="primary"
+onclick="addGoal()"
+>
+Add Goal
+</button>
+
+</div>
+
+
+<div id="allGoals"></div>
+
+</div>
+
+</section>
+
+
+<!-- SUBJECTS -->
+
+<section id="subjects" class="section">
+
+<div class="topbar">
+
+<div>
+
+<h1>📚 Subjects</h1>
+
+<div class="subtitle">
+Track your progress for each subject.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div id="subjectList"></div>
+
+</div>
+
+</section>
+
+
+<!-- TIMER -->
+
+<section id="timer" class="section">
+
+<div class="topbar">
+
+<div>
+
+<h1>⏱️ Focus Timer</h1>
+
+<div class="subtitle">
+Study without distractions.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card timer-card">
+
+<div class="timer-mode">
+Focus session
+</div>
+
+<div class="timer-clock" id="timerClock">
+25:00
+</div>
+
+<div class="timer-buttons">
+
+<button class="primary" onclick="startTimer()">
+Start
+</button>
+
+<button class="secondary" onclick="pauseTimer()">
+Pause
+</button>
+
+<button class="secondary" onclick="resetTimer()">
+Reset
+</button>
+
+</div>
+
+
+<div class="quick-times">
+
+<button onclick="setTimer(25)">
+25 min
+</button>
+
+<button onclick="setTimer(45)">
+45 min
+</button>
+
+<button onclick="setTimer(60)">
+60 min
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+</div>
+
+
+<!-- NORMAL TASK MODAL -->
+
+<div class="modal-bg" id="taskModal">
+
+<div class="modal">
+
+<h2 id="modalTitle">
+Add Study Task
+</h2>
+
+
+<form class="form" onsubmit="saveTask(event)">
+
+<label>
+Task title
+
+<input
+id="taskTitle"
+required
+placeholder="Maths — Chapter 1"
+>
+
+</label>
+
+
+<label>
+Subject
+
+<input
+id="taskSubject"
+placeholder="Maths"
+>
+
+</label>
+
+
+<label>
+Deadline
+
+<input
+id="taskDeadline"
+type="date"
+required
+>
+
+</label>
+
+
+<label>
+Priority
+
+<select id="taskPriority">
+
+<option value="Normal">
+Normal
+</option>
+
+<option value="High">
+🔥 High
+</option>
+
+<option value="Low">
+Low
+</option>
+
+</select>
+
+</label>
+
+
+<label>
+Notes
+
+<textarea
+id="taskNotes"
+placeholder="Optional notes..."
+></textarea>
+
+</label>
+
+
+<div class="modal-buttons">
+
+<button
+type="button"
+class="secondary"
+onclick="closeTaskModal()"
+>
+Cancel
+</button>
+
+<button
+type="submit"
+class="primary"
+>
+Save Task
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<!-- COMPULSORY MODAL -->
+
+<div class="modal-bg" id="compulsoryModal">
+
+<div class="modal">
+
+<h2>
+📌 Add Daily Compulsory Task
+</h2>
+
+
+<form
+class="form"
+onsubmit="saveCompulsory(event)"
+>
+
+<label>
+
+Task name
+
+<input
+id="compulsoryTitle"
+required
+placeholder="Example: Study Maths for 1 hour"
+>
+
+</label>
+
+
+<label>
+
+Subject
+
+<input
+id="compulsorySubject"
+placeholder="Maths"
+>
+
+</label>
+
+
+<label>
+
+Description
+
+<textarea
+id="compulsoryNotes"
+placeholder="What should you do?"
+></textarea>
+
+</label>
+
+
+<div class="modal-buttons">
+
+<button
+type="button"
+class="secondary"
+onclick="closeCompulsoryModal()"
+>
+Cancel
+</button>
+
+<button
+type="submit"
+class="primary"
+>
+Create Daily Task
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<div class="toast" id="toast">
+Saved ✓
+</div>
+
+
+<script>
+
+/* =========================================
+DATABASE
+========================================= */
+
+const STORAGE_KEY="studyflow_database";
+
+let database=
+JSON.parse(
+localStorage.getItem(STORAGE_KEY)
+)||{
+tasks:[],
+goals:[],
+compulsory:[],
+compulsoryHistory:{},
+studyDays:[]
+};
+
+let editingTaskId=null;
+
+
+/* =========================================
+DATE
+========================================= */
+
+function today(){
+return dateString(new Date());
+}
+
+function dateString(date){
+
+const y=date.getFullYear();
+
+const m=String(
+date.getMonth()+1
+).padStart(2,"0");
+
+const d=String(
+date.getDate()
+).padStart(2,"0");
+
+return `${y}-${m}-${d}`;
+
+}
+
+function formatDate(date){
+
+if(!date)return"No deadline";
+
+const parts=date.split("-");
+
+const d=new Date(
+Number(parts[0]),
+Number(parts[1])-1,
+Number(parts[2])
+);
+
+return d.toLocaleDateString(
+undefined,
+{
+day:"numeric",
+month:"short",
+year:"numeric"
+}
+);
+
+}
+
+function isToday(task){
+return task.deadline===today();
+}
+
+function isOverdue(task){
+return(
+task.deadline<today() &&
+!task.completed
+);
+}
+
+function escapeHTML(text){
+
+return String(text||"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+NAVIGATION
+========================================= */
+
+document
+.querySelectorAll(
+".nav button[data-page]"
+)
+.forEach(button=>{
+
+button.addEventListener(
+"click",
+()=>showPage(
+button.dataset.page
+)
+);
+
+});
+
+
+function showPage(page){
+
+document
+.querySelectorAll(
+".nav button[data-page]"
+)
+.forEach(button=>{
+
+button.classList.toggle(
+"active",
+button.dataset.page===page
+);
+
+});
+
+
+document
+.querySelectorAll(".section")
+.forEach(section=>{
+
+section.classList.toggle(
+"active",
+section.id===page
+);
+
+});
+
+
+if(page==="dashboard")
+renderDashboard();
+
+if(page==="week")
+renderWeek();
+
+if(page==="tasks")
+renderTasks();
+
+if(page==="compulsory")
+renderCompulsoryPage();
+
+if(page==="goals")
+renderGoals();
+
+if(page==="subjects")
+renderSubjects();
+
+}
+
+
+/* =========================================
+NORMAL TASK MODAL
+========================================= */
+
+function openTaskModal(id=null){
+
+editingTaskId=id;
+
+const task=id
+?
+database.tasks.find(
+t=>t.id===id
+)
+:null;
+
+document.getElementById(
+"modalTitle"
+).textContent=
+task
+?
+"Edit Study Task"
+:
+"Add Study Task";
+
+document.getElementById(
+"taskTitle"
+).value=
+task?.title||"";
+
+document.getElementById(
+"taskSubject"
+).value=
+task?.subject||"";
+
+document.getElementById(
+"taskDeadline"
+).value=
+task?.deadline||today();
+
+document.getElementById(
+"taskPriority"
+).value=
+task?.priority||"Normal";
+
+document.getElementById(
+"taskNotes"
+).value=
+task?.notes||"";
+
+document.getElementById(
+"taskModal"
+).classList.add("show");
+
+}
+
+function openTaskModalForDate(date){
+
+openTaskModal();
+
+document.getElementById(
+"taskDeadline"
+).value=date;
+
+}
+
+function closeTaskModal(){
+
+document.getElementById(
+"taskModal"
+).classList.remove("show");
+
+editingTaskId=null;
+
+}
+
+
+/* =========================================
+SAVE NORMAL TASK
+========================================= */
+
+function saveTask(event){
+
+event.preventDefault();
+
+const title=
+document.getElementById(
+"taskTitle"
+).value.trim();
+
+const subject=
+document.getElementById(
+"taskSubject"
+).value.trim();
+
+const deadline=
+document.getElementById(
+"taskDeadline"
+).value;
+
+const priority=
+document.getElementById(
+"taskPriority"
+).value;
+
+const notes=
+document.getElementById(
+"taskNotes"
+).value.trim();
+
+if(!title||!deadline)return;
+
+if(editingTaskId){
+
+const task=
+database.tasks.find(
+t=>t.id===editingTaskId
+);
+
+task.title=title;
+task.subject=subject;
+task.deadline=deadline;
+task.priority=priority;
+task.notes=notes;
+
+}else{
+
+database.tasks.push({
+
+id:Date.now().toString(),
+
+title,
+
+subject,
+
+deadline,
+
+priority,
+
+notes,
+
+completed:false
+
+});
+
+}
+
+closeTaskModal();
+
+saveDatabase();
+
+showToast("Task saved ✓");
+
+}
+
+
+/* =========================================
+TASK TOGGLE
+========================================= */
+
+function toggleTask(id){
+
+const task=
+database.tasks.find(
+t=>t.id===id
+);
+
+if(!task)return;
+
+task.completed=
+!task.completed;
+
+if(
+task.completed &&
+!database.studyDays.includes(
+today()
+)
+){
+
+database.studyDays.push(
+today()
+);
+
+}
+
+saveDatabase();
+
+showToast(
+task.completed
+?
+"Task completed ✓"
+:
+"Task reopened"
+);
+
+}
+
+
+/* =========================================
+DELETE TASK
+========================================= */
+
+function deleteTask(id){
+
+if(!confirm("Delete this task?"))
+return;
+
+database.tasks=
+database.tasks.filter(
+task=>task.id!==id
+);
+
+saveDatabase();
+
+showToast("Task deleted");
+
+}
+
+
+/* =========================================
+NORMAL TASK HTML
+========================================= */
+
+function createTaskHTML(task){
+
+return`
+
+<div class="task ${task.completed?"done":""}">
+
+<button
+class="check ${task.completed?"done":""}"
+onclick="toggleTask('${task.id}')"
+>
+${task.completed?"✓":""}
+</button>
+
+<div>
+
+<div class="task-title">
+
+${escapeHTML(task.title)}
+
+${
+task.subject
+?
+`<span class="tag">
+${escapeHTML(task.subject)}
+</span>`
+:
+""
+}
+
+</div>
+
+<div class="task-meta ${isOverdue(task)?"overdue":""}">
+
+📅 ${formatDate(task.deadline)}
+
+· ${escapeHTML(task.priority)}
+
+${isOverdue(task)?" · OVERDUE":""}
+
+</div>
+
+</div>
+
+<div class="task-actions">
+
+<button
+onclick="openTaskModal('${task.id}')"
+>
+Edit
+</button>
+
+<button
+onclick="deleteTask('${task.id}')"
+>
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================
+DASHBOARD
+========================================= */
+
+function renderDashboard(){
+
+const total=
+database.tasks.length;
+
+const completed=
+database.tasks.filter(
+t=>t.completed
+).length;
+
+const todayTasks=
+database.tasks.filter(
+isToday
+);
+
+const percent=
+total
+?
+Math.round(
+completed/total*100
+)
+:
+0;
+
+document.getElementById(
+"totalTasks"
+).textContent=total;
+
+document.getElementById(
+"completedTasks"
+).textContent=completed;
+
+document.getElementById(
+"todayTasksCount"
+).textContent=
+todayTasks.length;
+
+document.getElementById(
+"overallPercent"
+).textContent=
+percent+"%";
+
+document.getElementById(
+"overallBar"
+).style.width=
+percent+"%";
+
+document.getElementById(
+"streak"
+).textContent=
+getStreak();
+
+document.getElementById(
+"currentDate"
+).textContent=
+new Date()
+.toLocaleDateString(
+undefined,
+{
+weekday:"long",
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+);
+
+const hour=
+new Date().getHours();
+
+let greeting="Good evening 👋";
+
+if(hour<12)
+greeting="Good morning 👋";
+
+else if(hour<18)
+greeting="Good afternoon 👋";
+
+document.getElementById(
+"greeting"
+).textContent=
+greeting;
+
+renderCompulsoryDashboard();
+
+renderTodayTasks();
+
+renderDashboardGoals();
+
+}
+
+
+/* =========================================
+COMPULSORY TASK SYSTEM
+========================================= */
+
+/*
+Each compulsory task is stored only once.
+
+Example:
+
+{
+ id:"123",
+ title:"Study Maths",
+ subject:"Maths",
+ notes:"1 hour"
+}
+
+Completion is stored separately by date:
+
+compulsoryHistory:{
+ "2026-10-24":{
+   "123":true
+ }
+}
+
+This means the same task
+automatically comes back tomorrow.
+*/
+
+
+function isCompulsoryDone(id){
+
+const day=
+database.compulsoryHistory[
+today()
+];
+
+return day
+?
+day[id]===true
+:
+false;
+
+}
+
+
+function toggleCompulsory(id){
+
+if(
+!database.compulsoryHistory[
+today()
+]
+){
+
+database.compulsoryHistory[
+today()
+]={};
+
+}
+
+
+database.compulsoryHistory[
+today()
+][id]=
+!isCompulsoryDone(id);
+
+
+if(
+isCompulsoryDone(id) &&
+!database.studyDays.includes(
+today()
+)
+){
+
+database.studyDays.push(
+today()
+);
+
+}
+
+saveDatabase();
+
+showToast(
+isCompulsoryDone(id)
+?
+"Daily task completed ✓"
+:
+"Daily task reopened"
+);
+
+}
+
+
+function compulsoryHTML(task){
+
+const done=
+isCompulsoryDone(task.id);
+
+return`
+
+<div
+class="
+compulsory-task
+${done?"done":""}
+"
+>
+
+<button
+class="
+compulsory-check
+${done?"done":""}
+"
+onclick="
+toggleCompulsory('${task.id}')
+"
+>
+
+${done?"✓":""}
+
+</button>
+
+
+<div>
+
+<div class="compulsory-name">
+
+${escapeHTML(
+task.title
+)}
+
+</div>
+
+
+<div class="compulsory-meta">
+
+${
+task.subject
+?
+"📚 "+escapeHTML(
+task.subject
+)
+:
+"Daily task"
+}
+
+${
+task.notes
+?
+" · "+escapeHTML(
+task.notes
+)
+:
+""
+}
+
+</div>
+
+</div>
+
+
+<div class="compulsory-actions">
+
+<button
+onclick="
+deleteCompulsory(
+'${task.id}'
+)
+"
+>
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================
+COMPULSORY DASHBOARD
+========================================= */
+
+function renderCompulsoryDashboard(){
+
+const container=
+document.getElementById(
+"dashboardCompulsory"
+);
+
+if(!database.compulsory.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+No compulsory tasks yet.
+
+<br><br>
+
+Add the things you want
+to do every day.
+
+</div>
+
+`;
+
+updateDailyPercent();
+
+return;
+
+}
+
+
+container.innerHTML=
+database.compulsory
+.map(compulsoryHTML)
+.join("");
+
+updateDailyPercent();
+
+}
+
+
+/* =========================================
+COMPULSORY PAGE
+========================================= */
+
+function renderCompulsoryPage(){
+
+const container=
+document.getElementById(
+"allCompulsory"
+);
+
+if(!database.compulsory.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+📌 No compulsory tasks yet.
+
+<br><br>
+
+Create your first daily task.
+
+</div>
+
+`;
+
+updateDailyPercent();
+
+return;
+
+}
+
+
+container.innerHTML=
+database.compulsory
+.map(compulsoryHTML)
+.join("");
+
+updateDailyPercent();
+
+}
+
+
+/* =========================================
+DAILY PERCENT
+========================================= */
+
+function updateDailyPercent(){
+
+const total=
+database.compulsory.length;
+
+const completed=
+database.compulsory.filter(
+task=>
+isCompulsoryDone(task.id)
+).length;
+
+const percent=
+total
+?
+Math.round(
+completed/total*100
+)
+:
+0;
+
+const dashboardPercent=
+document.getElementById(
+"dailyPercent"
+);
+
+const pagePercent=
+document.getElementById(
+"compulsoryPagePercent"
+);
+
+const dashboardBar=
+document.getElementById(
+"dailyProgressBar"
+);
+
+const pageBar=
+document.getElementById(
+"compulsoryPageBar"
+);
+
+if(dashboardPercent)
+dashboardPercent.textContent=
+percent+"%";
+
+if(pagePercent)
+pagePercent.textContent=
+percent+"%";
+
+if(dashboardBar)
+dashboardBar.style.width=
+percent+"%";
+
+if(pageBar)
+pageBar.style.width=
+percent+"%";
+
+}
+
+
+/* =========================================
+COMPULSORY MODAL
+========================================= */
+
+function openCompulsoryModal(){
+
+document.getElementById(
+"compulsoryTitle"
+).value="";
+
+document.getElementById(
+"compulsorySubject"
+).value="";
+
+document.getElementById(
+"compulsoryNotes"
+).value="";
+
+document.getElementById(
+"compulsoryModal"
+).classList.add("show");
+
+document.getElementById(
+"compulsoryTitle"
+).focus();
+
+}
+
+
+function closeCompulsoryModal(){
+
+document.getElementById(
+"compulsoryModal"
+).classList.remove("show");
+
+}
+
+
+/* =========================================
+SAVE COMPULSORY
+========================================= */
+
+function saveCompulsory(event){
+
+event.preventDefault();
+
+const title=
+document.getElementById(
+"compulsoryTitle"
+).value.trim();
+
+const subject=
+document.getElementById(
+"compulsorySubject"
+).value.trim();
+
+const notes=
+document.getElementById(
+"compulsoryNotes"
+).value.trim();
+
+if(!title)return;
+
+database.compulsory.push({
+
+id:
+"c_"+Date.now().toString(),
+
+title,
+
+subject,
+
+notes
+
+});
+
+closeCompulsoryModal();
+
+saveDatabase();
+
+showToast(
+"Daily compulsory task added 📌"
+);
+
+}
+
+
+/* =========================================
+DELETE COMPULSORY
+========================================= */
+
+function deleteCompulsory(id){
+
+if(
+!confirm(
+"Remove this daily compulsory task?"
+)
+)
+return;
+
+database.compulsory=
+database.compulsory.filter(
+task=>task.id!==id
+);
+
+Object.keys(
+database.compulsoryHistory
+)
+.forEach(date=>{
+
+delete database
+.compulsoryHistory[date][id];
+
+});
+
+saveDatabase();
+
+showToast(
+"Compulsory task removed"
+);
+
+}
+
+
+/* =========================================
+TODAY TASKS
+========================================= */
+
+function renderTodayTasks(){
+
+const tasks=
+database.tasks.filter(
+isToday
+);
+
+const container=
+document.getElementById(
+"todayTaskList"
+);
+
+if(!tasks.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+🎉 You're clear for today!
+
+<br><br>
+
+Add your next study task.
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=
+tasks
+.map(createTaskHTML)
+.join("");
+
+}
+
+
+/* =========================================
+GOALS
+========================================= */
+
+function addGoal(){
+
+const input=
+document.getElementById(
+"goalInput"
+);
+
+const name=
+input.value.trim();
+
+if(!name)return;
+
+const match=
+name.match(
+/(\d+)\s*(chapter|chapters|task|tasks)/i
+);
+
+const target=
+match
+?
+Number(match[1])
+:
+1;
+
+database.goals.push({
+
+id:Date.now().toString(),
+
+name,
+
+target
+
+});
+
+input.value="";
+
+saveDatabase();
+
+showToast(
+"Goal added 🎯"
+);
+
+}
+
+
+function goalProgress(goal){
+
+let subject=null;
+
+const subjects=[
+"maths",
+"math",
+"physics",
+"chemistry",
+"biology",
+"science",
+"english",
+"history",
+"geography"
+];
+
+const words=
+goal.name
+.toLowerCase()
+.split(/\s+/);
+
+for(
+const subjectName
+of subjects
+){
+
+if(
+words.includes(
+subjectName
+)
+){
+
+subject=subjectName;
+
+break;
+
+}
+
+}
+
+let tasks=
+database.tasks;
+
+if(subject){
+
+tasks=
+tasks.filter(
+task=>
+(
+task.subject||""
+)
+.toLowerCase()
+.includes(subject)
+);
+
+}
+
+const completed=
+tasks.filter(
+task=>task.completed
+).length;
+
+return Math.min(
+100,
+Math.round(
+completed/goal.target*100
+)
+);
+
+}
+
+
+function goalHTML(goal){
+
+const percent=
+goalProgress(goal);
+
+return`
+
+<div class="goal">
+
+<div class="goal-header">
+
+<span>
+${escapeHTML(goal.name)}
+</span>
+
+<span>
+${percent}%
+</span>
+
+</div>
+
+<div class="goal-info">
+
+Target:
+${goal.target}
+completed tasks
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:${percent}%"
+></div>
+
+</div>
+
+<div class="goal-actions">
+
+<button
+onclick="deleteGoal('${goal.id}')"
+>
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+function renderDashboardGoals(){
+
+const container=
+document.getElementById(
+"dashboardGoals"
+);
+
+if(!database.goals.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+🎯 No goals yet.
+
+<br><br>
+
+Create your first target.
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=
+database.goals
+.slice(0,4)
+.map(goalHTML)
+.join("");
+
+}
+
+
+function renderGoals(){
+
+const container=
+document.getElementById(
+"allGoals"
+);
+
+if(!database.goals.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+No goals yet.
+
+<br><br>
+
+Try:
+
+<b>
+Complete 5 Maths chapters
+</b>
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=
+database.goals
+.map(goalHTML)
+.join("");
+
+}
+
+
+function deleteGoal(id){
+
+database.goals=
+database.goals.filter(
+goal=>goal.id!==id
+);
+
+saveDatabase();
+
+showToast(
+"Goal deleted"
+);
+
+}
+
+
+/* =========================================
+WEEKLY PLANNER
+========================================= */
+
+let weekOffset=0;
+
+
+function getMonday(date){
+
+const d=new Date(date);
+
+const day=d.getDay();
+
+const difference=
+day===0
+?
+-6
+:
+1-day;
+
+d.setDate(
+d.getDate()+difference
+);
+
+d.setHours(0,0,0,0);
+
+return d;
+
+}
+
+
+function getWeekDays(){
+
+const monday=
+getMonday(
+new Date()
+);
+
+monday.setDate(
+monday.getDate()+
+weekOffset*7
+);
+
+const days=[];
+
+for(
+let i=0;
+i<7;
+i++
+){
+
+const day=
+new Date(monday);
+
+day.setDate(
+monday.getDate()+i
+);
+
+days.push(day);
+
+}
+
+return days;
+
+}
+
+
+function changeWeek(amount){
+
+weekOffset+=amount;
+
+renderWeek();
+
+}
+
+
+function goCurrentWeek(){
+
+weekOffset=0;
+
+renderWeek();
+
+}
+
+
+function renderWeek(){
+
+const days=
+getWeekDays();
+
+const first=days[0];
+
+const last=days[6];
+
+document.getElementById(
+"weekTitle"
+).textContent=
+
+first.toLocaleDateString(
+undefined,
+{
+day:"numeric",
+month:"short"
+}
+)
+
++" — "+
+
+last.toLocaleDateString(
+undefined,
+{
+day:"numeric",
+month:"short",
+year:"numeric"
+}
+);
+
+const grid=
+document.getElementById(
+"weekGrid"
+);
+
+grid.innerHTML=
+days.map(
+day=>{
+
+const date=
+dateString(day);
+
+const tasks=
+database.tasks.filter(
+task=>task.deadline===date
+);
+
+const isToday=
+date===today();
+
+return`
+
+<div
+class="day-card ${isToday?"today":""}"
+>
+
+<div class="day-header">
+
+<div class="day-name">
+
+${day.toLocaleDateString(
+undefined,
+{weekday:"short"}
+)}
+
+</div>
+
+<div class="day-number">
+
+${day.getDate()}
+
+</div>
+
+${
+isToday
+?
+`<span class="today-label">
+TODAY
+</span>`
+:
+""
+}
+
+</div>
+
+<div class="day-tasks">
+
+${
+tasks.length
+?
+tasks.map(createDayTask).join("")
+:
+`
+<div
+style="
+text-align:center;
+color:var(--muted);
+font-size:12px;
+padding:20px 5px;
+"
+>
+No tasks
+</div>
+`
+}
+
+</div>
+
+<button
+class="add-day-task"
+onclick="
+openTaskModalForDate('${date}')
+"
+>
++ Add task
+</button>
+
+</div>
+
+`;
+
+}
+).join("");
+
+renderWeekStats();
+
+}
+
+
+function createDayTask(task){
+
+let priorityClass="";
+
+if(task.priority==="High")
+priorityClass="priority-high";
+
+if(task.priority==="Low")
+priorityClass="priority-low";
+
+return`
+
+<div
+class="day-task ${task.completed?"completed":""}"
+onclick="
+toggleTask('${task.id}')
+"
+>
+
+<div class="day-task-title">
+
+${escapeHTML(task.title)}
+
+</div>
+
+${
+task.subject
+?
+`
+<div class="day-task-subject">
+
+📚 ${escapeHTML(task.subject)}
+
+</div>
+`
+:
+""
+}
+
+<div
+class="day-task-priority ${priorityClass}"
+>
+
+${task.priority}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+function renderWeekStats(){
+
+const days=
+getWeekDays();
+
+const start=
+dateString(days[0]);
+
+const end=
+dateString(days[6]);
+
+const tasks=
+database.tasks.filter(
+task=>
+task.deadline>=start &&
+task.deadline<=end
+);
+
+const completed=
+tasks.filter(
+task=>task.completed
+).length;
+
+const percent=
+tasks.length
+?
+Math.round(
+completed/tasks.length*100
+)
+:
+0;
+
+document.getElementById(
+"weekTotal"
+).textContent=
+tasks.length;
+
+document.getElementById(
+"weekCompleted"
+).textContent=
+completed;
+
+document.getElementById(
+"weekPercent"
+).textContent=
+percent+"%";
+
+document.getElementById(
+"weekStreak"
+).textContent=
+getStreak();
+
+}
+
+
+/* =========================================
+ALL TASKS
+========================================= */
+
+function renderTasks(){
+
+const search=
+document.getElementById(
+"search"
+)?.value
+.toLowerCase()||"";
+
+const filter=
+document.getElementById(
+"filter"
+)?.value||"all";
+
+let tasks=
+database.tasks.filter(
+task=>{
+
+const text=
+(
+task.title+
+" "+
+task.subject+
+" "+
+task.notes
+)
+.toLowerCase();
+
+return text.includes(search);
+
+});
+
+tasks=
+tasks.filter(
+task=>{
+
+if(filter==="active")
+return !task.completed;
+
+if(filter==="completed")
+return task.completed;
+
+if(filter==="today")
+return isToday(task);
+
+if(filter==="overdue")
+return isOverdue(task);
+
+return true;
+
+});
+
+const container=
+document.getElementById(
+"allTaskList"
+);
+
+if(!tasks.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+No tasks found.
+
+<br><br>
+
+Add a task to get started.
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=
+tasks
+.map(createTaskHTML)
+.join("");
+
+}
+
+
+/* =========================================
+SUBJECTS
+========================================= */
+
+function renderSubjects(){
+
+const container=
+document.getElementById(
+"subjectList"
+);
+
+const subjects={};
+
+database.tasks.forEach(
+task=>{
+
+const name=
+task.subject||"Other";
+
+if(!subjects[name]){
+
+subjects[name]={
+total:0,
+completed:0
+};
+
+}
+
+subjects[name].total++;
+
+if(task.completed)
+subjects[name].completed++;
+
+}
+);
+
+const names=
+Object.keys(subjects);
+
+if(!names.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+📚 No subjects yet.
+
+<br><br>
+
+Add a task with a subject.
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=`
+
+<div class="subject-grid">
+
+${
+names.map(
+name=>{
+
+const subject=
+subjects[name];
+
+const percent=
+Math.round(
+subject.completed/
+subject.total*100
+);
+
+return`
+
+<div class="subject">
+
+<div class="subject-name">
+
+${escapeHTML(name)}
+
+</div>
+
+<div class="subject-count">
+
+${subject.completed}
+/
+${subject.total}
+completed
+
+</div>
+
+<div
+class="progress"
+style="margin-top:10px"
+>
+
+<div
+class="progress-bar"
+style="width:${percent}%"
+></div>
+
+</div>
+
+</div>
+
+`;
+
+}
+).join("")
+}
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================
+STREAK
+========================================= */
+
+function getStreak(){
+
+let count=0;
+
+const date=new Date();
+
+while(true){
+
+const value=
+dateString(date);
+
+if(
+database.studyDays
+.includes(value)
+){
+
+count++;
+
+date.setDate(
+date.getDate()-1
+);
+
+}else{
+
+break;
+
+}
+
+}
+
+return count;
+
+}
+
+
+/* =========================================
+TIMER
+========================================= */
+
+let timerSeconds=25*60;
+
+let timerInterval=null;
+
+
+function updateTimer(){
+
+const minutes=
+Math.floor(
+timerSeconds/60
+);
+
+const seconds=
+timerSeconds%60;
+
+document.getElementById(
+"timerClock"
+).textContent=
+
+String(minutes)
+.padStart(2,"0")
+
++
+
+":"
+
++
+
+String(seconds)
+.padStart(2,"0");
+
+}
+
+
+function startTimer(){
+
+if(timerInterval)
+return;
+
+timerInterval=
+setInterval(
+()=>{
+
+if(timerSeconds<=0){
+
+pauseTimer();
+
+showToast(
+"🎉 Focus session complete!"
+);
+
+return;
+
+}
+
+timerSeconds--;
+
+updateTimer();
+
+},
+1000
+);
+
+}
+
+
+function pauseTimer(){
+
+clearInterval(
+timerInterval
+);
+
+timerInterval=null;
+
+}
+
+
+function resetTimer(){
+
+pauseTimer();
+
+timerSeconds=25*60;
+
+updateTimer();
+
+}
+
+
+function setTimer(minutes){
+
+pauseTimer();
+
+timerSeconds=
+minutes*60;
+
+updateTimer();
+
+}
+
+
+/* =========================================
+DARK MODE
+========================================= */
+
+function toggleDarkMode(){
+
+document.body
+.classList.toggle("dark");
+
+localStorage.setItem(
+"studyflow_dark",
+document.body
+.classList.contains("dark")
+);
+
+}
+
+
+if(
+localStorage.getItem(
+"studyflow_dark"
+)==="true"
+){
+
+document.body
+.classList.add("dark");
+
+}
+
+
+/* =========================================
+SAVE DATABASE
+========================================= */
+
+function saveDatabase(){
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(database)
+);
+
+renderEverything();
+
+}
+
+
+/* =========================================
+TOAST
+========================================= */
+
+function showToast(message){
+
+const toast=
+document.getElementById(
+"toast"
+);
+
+toast.textContent=message;
+
+toast.classList.add("show");
+
+setTimeout(
+()=>{
+toast.classList.remove("show");
+},
+1600
+);
+
+}
+
+
+/* =========================================
+RENDER EVERYTHING
+========================================= */
+
+function renderEverything(){
+
+renderDashboard();
+
+renderWeek();
+
+renderTasks();
+
+renderCompulsoryPage();
+
+renderGoals();
+
+renderSubjects();
+
+updateTimer();
+
+}
+
+
+/* =========================================
+START
+========================================= */
+
+renderEverything();
+
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("StudyForge service worker registered"))
+      .catch(error => console.error("Service worker error:", error));
+  });
+}
+</script>
+</body>
+</html>

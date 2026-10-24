@@ -1,0 +1,18 @@
+{
+  "name": "StudyForge - Study Planner",
+  "short_name": "StudyForge",
+  "description": "Study planner, tasks, goals and focus timer.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#635bdb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
