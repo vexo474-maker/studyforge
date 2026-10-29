@@ -32,6 +32,7 @@ body{background:radial-gradient(ellipse at 82% -5%,#1b6681 0,transparent 34%),ra
 .stat-icon{background:#174b62;color:#ffdc83}
 .btn{background:linear-gradient(135deg,#ffd166,#f5a64d);color:#172d3b}
 .btn.secondary{background:#153d53;color:#e4f6f8;border-color:#2b6075}
+
 .btn.ghost{color:#c0d9e4;border-color:#2b5267}
 .task,.goal-item{background:#0f3044;border-color:#24516a}
 .task input[type=checkbox]{accent-color:#ffd166}
@@ -189,7 +190,7 @@ body {
     <div>
       <div class="panel"><div class="panel-head"><div><h3>🗺️ Your Weekly Voyage</h3><div class="panel-sub">Your study activity this week</div></div><span class="tag">7 days</span></div><div class="streak-card"><div class="flame">🔥</div><div><strong id="streakBig">0 day streak</strong><small>Study a little each day to build a habit.</small></div></div><div class="week" id="weekActivity"></div></div>
       <div class="panel"><div class="panel-head"><div><h3>🏴‍☠️ Treasure Goals</h3><div class="panel-sub">Keep your targets in sight</div></div><button class="icon-btn" data-go="goals">↗</button></div><div id="goalPreview"></div><button class="btn secondary" style="width:100%;margin-top:7px" data-go="goals">＋ Manage goals</button></div>
-      <div class="panel"><div class="panel-head"><div><h3>⏳ Training Deck</h3><span class="tag">Pomodoro</span></div></div><div class="timer-box"><div class="timer" id="miniTimer">25:00</div><div class="timer-caption" id="miniTimerLabel">Ready when you are</div><div class="timer-controls"><button class="btn" data-go="focus">Open focus room →</button></div></div></div>
+      <div class="panel"><div class="panel-head"><div><h3>⏳ Training Deck</h3><span class="tag">Pomodoro</span></div></div><div class="timer-box"><div class="timer" id="miniTimer">60:00</div><div class="timer-caption" id="miniTimerLabel">Ready when you are</div><div class="timer-controls"><button class="btn" data-go="focus">Open focus room →</button></div></div></div>
     </div>
   </div>
 </section>
@@ -244,7 +245,7 @@ body {
     <div class="panel">
       <div class="panel-head"><div><h3>Focus room</h3><div class="panel-sub">One task at a time. You've got this.</div></div><span class="tag">DEEP WORK</span></div>
       <div class="timer-box">
-        <div class="timer-mode"><button class="active" data-mode="focus">Focus · 25m</button><button data-mode="short">Short break · 5m</button><button data-mode="long">Long break · 15m</button></div>
+        <div class="timer-mode"><button class="active" data-mode="focus">Focus · 1h</button><button data-mode="short">Short break · 5m</button><button data-mode="long">Long break · 15m</button></div>
         <div class="timer" id="focusTimer">25:00</div><div class="timer-caption" id="focusCaption">Ready for a focused session?</div>
         <div class="timer-progress"><div class="bar"><span id="timerBar" style="width:0%"></span></div></div>
         <div class="timer-controls"><button class="btn" id="timerStart">▶ Start focus</button><button class="btn secondary" id="timerReset">↺ Reset</button></div>
@@ -283,7 +284,7 @@ const uid=()=>`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8
 const defaultState=()=>({tasks:[],goals:[],xp:0,studySeconds:0,sessions:0,activity:{},lastStudyDate:null,streak:0,settings:{},createdAt:new Date().toISOString()});
 let state=loadState(), currentPage='dashboard', taskFilter='all', editingTask=null, editingGoal=null;
 let calendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1), selectedDate=today();
-let timerMode='focus',timerSeconds=25*60,timerRemaining=25*60,timerRunning=false,timerEnd=0,timerInterval=null;
+let timerMode='focus',timerSeconds=60*60,timerRemaining=60*60,timerRunning=false,timerEnd=0,timerInterval=null;
 function loadState(){try{const raw=localStorage.getItem(KEY);if(!raw)return defaultState();const x=JSON.parse(raw);return {...defaultState(),...x,tasks:Array.isArray(x.tasks)?x.tasks:[],goals:Array.isArray(x.goals)?x.goals:[],activity:x.activity||{}}}catch(e){return defaultState()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast('Could not save: browser storage may be full. Export a backup.')}renderStats()}
 function toast(msg){const old=document.querySelector('.toast');if(old)old.remove();const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
@@ -341,7 +342,7 @@ $('calendarGrid').addEventListener('click',e=>{const c=e.target.closest('[data-d
 $('prevMonth').addEventListener('click',()=>{calendarMonth.setMonth(calendarMonth.getMonth()-1);renderCalendar()});$('nextMonth').addEventListener('click',()=>{calendarMonth.setMonth(calendarMonth.getMonth()+1);renderCalendar()});$('thisMonth').addEventListener('click',()=>{calendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);selectedDate=today();renderCalendar()});
 function formatTime(s){s=Math.max(0,Math.floor(s));return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
 function renderFocusTaskOptions(){const sel=$('focusTask');if(!sel)return;const old=sel.value;sel.innerHTML='<option value="">General study session</option>'+state.tasks.filter(t=>!t.done).map(t=>`<option value="${escapeHTML(t.id)}">${escapeHTML(t.subject)} — ${escapeHTML(t.title)}</option>`).join('');if([...sel.options].some(o=>o.value===old))sel.value=old}
-function setTimerMode(mode){if(timerRunning&&!confirm('Switch timer mode? Your current session will not be recorded.'))return;stopTimer(false);timerMode=mode;timerSeconds=({focus:25,short:5,long:15}[mode])*60;timerRemaining=timerSeconds;document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));renderTimer()}
+function setTimerMode(mode){if(timerRunning&&!confirm('Switch timer mode? Your current session will not be recorded.'))return;stopTimer(false);timerMode=mode;timerSeconds=({focus:60,short:5,long:15}[mode])*60;timerRemaining=timerSeconds;document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));renderTimer()}
 function renderTimer(){const s=formatTime(timerRemaining);$('focusTimer').textContent=s;$('miniTimer').textContent=s;$('timerBar').style.width=`${Math.round((timerSeconds-timerRemaining)/timerSeconds*100)}%`;$('timerStart').textContent=timerRunning?'Ⅱ Pause':timerRemaining===0?'↻ Start again':'▶ Start focus';$('focusCaption').textContent=timerRunning?'Stay with the task. You’re doing great.':timerRemaining===0?'Session complete — take a moment to reset.':timerMode==='focus'?'Ready for a focused session?':'A little rest helps your brain recharge.';$('miniTimerLabel').textContent=timerRunning?'Session in progress':timerMode==='focus'?'Ready when you are':'Break time'}
 function stopTimer(clear=true){timerRunning=false;if(timerInterval){clearInterval(timerInterval);timerInterval=null}if(clear)renderTimer()}
 function startTimer(){if(timerRunning){stopTimer();return}if(timerRemaining<=0){timerRemaining=timerSeconds}timerRunning=true;timerEnd=Date.now()+timerRemaining*1000;renderTimer();timerInterval=setInterval(()=>{timerRemaining=Math.max(0,Math.ceil((timerEnd-Date.now())/1000));renderTimer();if(timerRemaining<=0)completeTimer()},250)}
